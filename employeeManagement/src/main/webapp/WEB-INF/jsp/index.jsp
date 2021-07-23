@@ -2,6 +2,14 @@
 <head>
 <body>
 	<center>
+	<h2>Registration page</h2>
+	<% 
+		String msg=(String)request.getAttribute("message");
+		if(msg!=null)
+		{
+		%>
+			<h5><%= msg %></h5>
+		<% }%>
 	<form method="post" action="register" enctype="multipart/form-data">
 		First Name <input type="text" name="firstName"/><br>
 		List Name  <input type="text" name="LastName"/><br>

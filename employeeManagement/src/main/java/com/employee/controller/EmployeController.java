@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import com.employee.entity.Employe;
 import com.employee.repo.EmployeRepo;
 import com.employee.service.FileUploadUtil;
 
-import antlr.StringUtils;
+
 
 @Controller
 public class EmployeController {
@@ -36,14 +37,15 @@ public class EmployeController {
 		return "index";
 	}
 	@PostMapping("/register")
-	public String Register(Employe employe , Model model , @RequestParam("image") MultipartFile file) throws IOException 
+	public String register(Employe employe , Model model , @RequestParam("image") MultipartFile file) throws IOException 
 	{
-		String uploadDir = "C://Users//Deenu//Documents//workspace-spring-tool-suite-4-4.6.0.RELEASE//employeeManagement//src//main//webapp/img" ;
+		String uploadDir = "C:\\Users\\Deenu\\git\\task1\\employeeManagement\\src\\main\\webapp\\img" ;
 		String fileName = file.getOriginalFilename();
 		employe.setImageName(fileName);
 	    FileUploadUtil.saveFile(uploadDir, fileName, file);
 		empRepo.save(employe);
 		model.addAttribute("employe", employe);
+		model.addAttribute("message","successful registration");
 		return "index";
 		
 	}
@@ -51,19 +53,19 @@ public class EmployeController {
 	public ModelAndView viewEmploye() 
 	{
 		List<Employe> list=(List<Employe>) empRepo.findAll();
-		 ModelAndView map = new ModelAndView("view");
-		    map.addObject("lists", list);
+		ModelAndView map = new ModelAndView("view");
+		map.addObject("lists", list);
 		return  map;
 	}
 	@RequestMapping("/update/{id}")
 	public ModelAndView updateEmp(@PathVariable("id") int ids, Model model) 
 	{
 		
-		Employe e=empRepo.findByEid(ids);
-		
+		 Employe e=empRepo.findByEid(ids);
 		 ModelAndView map = new ModelAndView("update");
 		 model.addAttribute("e", e);
-		return  map;
+		 model.addAttribute("message", "record Updated Succesfully");
+		 return  map;
 	}
 	
 	@RequestMapping("/delete/{id}")
@@ -71,20 +73,25 @@ public class EmployeController {
 	{
 		
 		empRepo.deleteById(ids);
-		
-		 ModelAndView map = new ModelAndView("index");
-		
-		
+		List<Employe> list=(List<Employe>) empRepo.findAll();
+		ModelAndView map = new ModelAndView("view");
+		map.addObject("lists", list);
+		model.addAttribute("message", "Record Deleted Succesfully");
 		return  map;
 	}
 	@PostMapping("/edit")
-	public String Register(Employe employe ) 
+	public String edit(Employe employe , Model model) 
 	{
 		
-	   
+	   try {
 		empRepo.save(employe);
-		
-		return "index";
+		List<Employe> list=(List<Employe>) empRepo.findAll();
+		model.addAttribute("lists", list);
+	   }catch(Exception e) 
+	   {
+		   e.getStackTrace();
+	   }
+		return "view";
 		
 	}
 	

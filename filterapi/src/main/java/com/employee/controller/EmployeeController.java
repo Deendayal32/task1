@@ -29,7 +29,7 @@ public class EmployeeController {
 			 a=Integer.parseInt(key);
 		}catch(Exception e) {e.printStackTrace();}
 		if(a!=null) {
-		 pageable = PageRequest.of(a, 3);
+		 pageable = PageRequest.of(0, a);
 		return (Page<Employee>) empServ.findAll(pageable);
 		}else {
 		return (Page<Employee>) empServ.findAllBy(key,pageable) ;

@@ -3,12 +3,14 @@
 <head>
 <body>
 	<center>
+	<h2>Update detail</h2>
 	<%
 	Employe employe=(Employe)request.getAttribute("e");
 	
 	%><%=employe.getEid() %>
 	<form method="post" action="/edit">
 		 <input type="hidden" name="eid" value="<%= employe.getEid() %>" / ><br>
+		 <input type="hidden" name="imageName" value="<%= employe.getImageName() %>" / ><br>
 		First Name <input type="text" name="firstName" value="<%= employe.getFirstName() %>"/ ><br>
 		List Name  <input type="text" name="LastName" value="<%= employe.getLastName() %>"/><br>
 		Salary <input type="text" name="salary" value="<%= employe.getSalary() %>"/><br>
